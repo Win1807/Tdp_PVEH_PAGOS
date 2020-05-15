@@ -1,0 +1,365 @@
+<mvc:View 
+	controllerName="sap.ui.veh_pagos.controller.Home" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:c="sap.ui.core" 
+	xmlns:t="sap.ui.table"
+	xmlns="sap.m"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+	xmlns:smartVariantManagement="sap.ui.comp.smartvariants"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Page title="Módulo de Pagos al Dealer" showNavButton="true" navButtonPress="onNavBack">
+    	<f:Form id="Parametros" editable="true" title="">
+		    <f:layout>
+		      <f:ResponsiveGridLayout
+		        labelSpanXL="3"
+		        labelSpanL="3"
+		        labelSpanM="3"
+		        labelSpanS="12"
+		        adjustLabelSpan="false"
+		        emptySpanXL="0"
+		        emptySpanL="0"
+		        emptySpanM="0"
+		        emptySpanS="0"
+		        columnsXL="2"
+		        columnsL="2"
+		        columnsM="1"
+		        singleContainerFullSize="false" />
+		    </f:layout>
+		    <f:formContainers>
+		      <f:FormContainer title="">
+		        <f:formElements>
+		
+		          <f:FormElement label="Serie" required="true" >
+		            <f:fields>
+		              <Input id="idSerie"/>
+		            </f:fields>
+		          </f:FormElement>
+		          <f:FormElement label="A">
+		            <f:fields>
+		              <Input id="idASerie" />
+		            </f:fields>
+		          </f:FormElement>
+		          <f:FormElement label="Modelo">
+		            <f:fields>
+		              <Input id="idModelo" />
+		            </f:fields>
+		          </f:FormElement>
+		          <f:FormElement label="A">
+		            <f:fields>
+		              <Input id="idAModelo" />
+		            </f:fields>
+		          </f:FormElement>
+		          <f:FormElement label="Tipo de Campaña">
+		            <f:fields>
+		              <Input id="idTipoCampania" />
+		            </f:fields>
+		          </f:FormElement>
+		          <f:FormElement label="A">
+		            <f:fields>
+		              <Input id="idATipoCampania" />
+		            </f:fields>
+		          </f:FormElement>
+		
+		        </f:formElements>
+		      </f:FormContainer>
+		
+		      <f:FormContainer title="">
+		          <f:formElements>
+		
+		            <f:FormElement label="Fecha de Solicitud">
+		              <f:fields>
+		                <DatePicker
+		                  id="idFecSolicitud"
+		                  displayFormat="dd.MM.yyyy"
+		                  valueFormat="yyyy-MM-dd"
+		                  placeholder="dd.mm.yyyy"
+		                  change="handleChange"/>
+		                    </f:fields>
+		            </f:FormElement>
+		            <f:FormElement label="A">
+		              <f:fields>
+		                <DatePicker
+		                  id="idAFecSolicitud"
+		                  displayFormat="dd.MM.yyyy"
+		                  valueFormat="yyyy-MM-dd"
+		                  placeholder="dd.mm.yyyy"
+		                  change="handleChange"/>
+		                    </f:fields>
+		            </f:FormElement>
+		            <f:FormElement label="Marca">
+		              <f:fields>
+		                <Select id="idMarca" selectedKey="">
+		                	<c:Item key="" text=""/>
+		                	<c:Item key="1" text="TODOS"/>
+		                </Select>
+		              </f:fields>
+		            </f:FormElement>
+		            <f:FormElement label="Estado de Solicitud">
+		              <f:fields>
+		                <Select id="idEstado" selectedKey="">
+		                	<c:Item key="" text=""/>
+		                	<c:Item key="TODOS" text="TODOS"/>
+		                	<c:Item key="RETENIDO" text="RETENIDO"/>
+		                	<c:Item key="PROCESADO" text="PROCESADO"/>
+		                	<c:Item key="EN PROCESO" text="EN PROCESO"/>
+		                	<c:Item key="PAGADO" text="PAGADO"/>
+		                </Select>
+		              </f:fields>
+		            </f:FormElement>
+		            <f:FormElement label="">
+		                <f:fields>
+		                  <Button 
+		                      press="onBuscarDatos"
+		                      text="Buscar"
+		                      icon="sap-icon://search" type="Accept"/>
+		                </f:fields>
+		            </f:FormElement>
+		
+		          </f:formElements>
+		      </f:FormContainer>
+		
+		    </f:formContainers>
+		  </f:Form>
+		
+		  <l:VerticalLayout>
+		    <l:HorizontalLayout>
+		      <Label class="sapUiTinyMarginTop sapUiTinyMarginEnd sapUiTinyMarginBegin" text="Cantidad a mostrar:" />
+		      <Select id="sShow" selectKey="3" change="onShow">
+		          <c:ListItem key="3" text="3"/>
+		          <c:ListItem key="10" text="10"/>
+		          <c:ListItem key="25" text="25"/>
+		          <c:ListItem key="50" text="50"/>
+		          <c:ListItem key="100" text="100"/>
+		      </Select>
+		      <Button 
+		      id="btnSiguiente" icon="sap-icon://navigation-right-arrow"  iconFirst="false" type="Transparent"  text="Siguiente"  press="goNext"/>
+		      <Button 
+		      id="btnAnterior" icon="sap-icon://navigation-left-arrow"  type="Transparent"  text="Anterior"  press="goPrevious"/>
+		    </l:HorizontalLayout>
+		
+		  <smartVariantManagement:SmartVariantManagement
+		    id="pageVariantId"
+		    class="sapUiTinyMarginTop sapUiTinyMarginEnd sapUiTinyMarginBegin"
+		    persistencyKey="PageVariantPKey"/>
+		          
+		    <ScrollContainer
+			    height="100%"
+			    width="100%"
+			    horizontal="true"
+			    vertical="true"
+			    focusable="true">
+		      <smartTable:SmartTable
+		        id="frgReporteSolicitud--tblVisualizarT"
+		        smartFilterId="smartFilterBar"
+		        smartVariant="pageVariantId"
+		        tableType="ResponsiveTable"
+		        entitySet="RPT_SOLICITUDESDLRSet"
+		        useTablePersonalisation="true"
+		        dataReceived="onLoadT"
+		        beforeRebindTable="onBeforeTBL"
+		        initiallyVisibleFields="Ebeln,Tpcamp,Bedat,Vhcle,Matnr,Maktx,Erdat,Ernam,Kunnr,Netpr,Waers,Aedat,Marca,MarcaNom"
+		        useExportToExcel="true"
+                beforeExport="onBeforeExport"                     
+		        enableAutoBinding="false"
+		        customData:useSmartField="false"
+		        smartSelectionMode="Single"
+		        showRowCount="false"
+		        persistencyKey="SmartTablePKey">
+		          <smartTable:customToolbar> 
+		            <OverflowToolbar design="Transparent"> 
+		              <ToolbarSpacer/> 
+		              <Button press="onVolver" icon="sap-icon://close-command-field" tooltip="Volver" id="frgReporteSolicitud--botonVolver"/>
+		            </OverflowToolbar> 
+		          </smartTable:customToolbar>
+		          <Table>
+		            <columns>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Ebeln", "leadingProperty":"Ebeln","sortProperty":"Ebeln", "filterProperty":"Ebeln"}' />
+		                  </customData>
+		                <Label text="Orden de Compra" />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Tpcamp", "leadingProperty":"Tpcamp","sortProperty":"Tpcamp", "filterProperty":"Tpcamp"}' />
+		                  </customData>
+		                <Label text="Tipo de Campaña" />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Bedat", "leadingProperty":"Bedat","sortProperty":"Bedat", "filterProperty":"Bedat"}' />
+		                  </customData>
+		                <Label text="Fec. de Emisión" />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Vhcle", "leadingProperty":"Vhcle","sortProperty":"Vhcle", "filterProperty":"Vhcle"}' />
+		                  </customData>
+		                <Label text="Serie" />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Matnr", "leadingProperty":"Matnr","sortProperty":"Matnr", "filterProperty":"Matnr"}' />
+		                  </customData>
+		                <Label text="Modelo vehículo" />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Maktx", "leadingProperty":"Maktx","sortProperty":"Maktx", "filterProperty":"Maktx"}' />
+		                  </customData>
+		                <Label text="Descripción" />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Erdat", "leadingProperty":"Erdat","sortProperty":"Erdat", "filterProperty":"Erdat"}' />
+		                  </customData>
+		                <Label text="Fec. de Solicitud" />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Ernam", "leadingProperty":"Ernam","sortProperty":"Ernam", "filterProperty":"Ernam"}' />
+		                  </customData>
+		                <Label text="Usuario Sol." />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Kunnr", "leadingProperty":"Kunnr","sortProperty":"Kunnr", "filterProperty":"Kunnr"}' />
+		                  </customData>
+		                <Label text="Tienda Sol." />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Netpr", "leadingProperty":"Netpr","sortProperty":"Netpr", "filterProperty":"Netpr"}' />
+		                  </customData>
+		                <Label text="Monto Pagado" />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Waers", "leadingProperty":"Waers","sortProperty":"Waers", "filterProperty":"Waers"}' />
+		                  </customData>
+		                <Label text="Moneda de Monto" />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Aedat", "leadingProperty":"Aedat","sortProperty":"Aedat", "filterProperty":"Aedat"}' />
+		                  </customData>
+		                <Label text="Fec. de Pago" />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "Marca", "leadingProperty":"Marca","sortProperty":"Marca", "filterProperty":"Marca"}' />
+		                  </customData>
+		                <Label text="Marca" />
+		              </Column>
+		              <Column width="8rem" >
+		                  <customData> 
+		                  <c:CustomData key="p13nData"
+		                      value='\{"columnKey": "MarcaNom", "leadingProperty":"MarcaNom","sortProperty":"MarcaNom","filterProperty":"MarcaNom"}' />
+		                  </customData>
+		                <Label text="Marca Des." />
+		              </Column>
+		            </columns>
+		            <items>
+		              <ColumnListItem>
+		                  <cells>
+		                    <Text text="{Ebeln}" />
+		                    <Text text="{Tpcamp}" />
+		                    <Text text="{Bedat}" />
+		                    <Text text="{Vhcle}" />
+		                    <Text text="{Matnr}" />
+		                    <Text text="{Maktx}" />
+		                    <Text text="{Erdat}" />
+		                    <Text text="{Ernam}" />
+		                    <Text text="{Kunnr}" />
+		                    <Text text="{Netpr}" />
+		                    <Text text="{Waers}" />
+		                    <Text text="{Aedat}" />
+		                    <Text text="{Marca}" />
+		                    <Text text="{MarcaNom}"/>
+		                  </cells>
+		              </ColumnListItem>
+		            </items>
+		        </Table>
+		      </smartTable:SmartTable>
+		    </ScrollContainer>
+		    <smartTable:SmartTable
+		        id="frgReporteSolicitud--tblVisualizarM"
+		        smartFilterId="smartFilterBar"
+		        tableType="ResponsiveTable"
+		        entitySet="RPT_SOLICITUDESDLRSet"
+		        useTablePersonalisation="true"
+		        dataReceived="onLoadM"
+		        beforeRebindTable="onBeforeTBL"
+		        initiallyVisibleFields=""
+		        useExportToExcel="true"
+                beforeExport="onBeforeExport"                   
+		        enableAutoBinding="false"
+		        customData:useSmartField="false"
+		        smartSelectionMode="Single"
+		        showRowCount="false"
+		        demandPopin="true">
+		        <Table>
+		          <columns>
+		            <Column width="8rem" >
+		              <customData> 
+		                <c:CustomData key="p13nData" value='\{"columnKey": "Ebeln", "leadingProperty":"Ebeln","sortProperty":"Ebeln","filterProperty":"Ebeln"}' />
+		              </customData>
+		              <Label text="Serie" />
+		            </Column>
+		            <Column width="8rem" >
+		              <customData> 
+		                <c:CustomData key="p13nData" value='\{"columnKey": "Tpcamp", "leadingProperty":"Tpcamp","sortProperty":"Tpcamp","filterProperty":"Tpcamp"}' />
+		              </customData>
+		              <Label text="Fec. de Emisión" />
+		            </Column>
+		            <Column width="8rem" >
+		              <customData> 
+		                <c:CustomData key="p13nData" value='\{"columnKey": "Bedat", "leadingProperty":"Bedat","sortProperty":"Bedat","filterProperty":"Bedat"}' />
+		              </customData>
+		              <Label text="Usuario Sol." />
+		            </Column>
+		            <Column width="8rem" >
+		              <customData> 
+		                <c:CustomData key="p13nData" value='\{"columnKey": "Vhcle", "leadingProperty":"Vhcle","sortProperty":"Vhcle","filterProperty":"Vhcle"}' />
+		              </customData>
+		              <Label text="Tienda Sol." />
+		            </Column>
+		            <Column width="8rem" >
+		              <customData> 
+		                <c:CustomData key="p13nData" value='\{"columnKey": "Matnr", "leadingProperty":"Matnr","sortProperty":"Matnr","filterProperty":"Matnr"}' />
+		              </customData>
+		              <Label text="Monto Pagado" />
+		            </Column>
+		          </columns>
+		          <items>
+		            <ColumnListItem type="Navigation" press="onPressItem">
+		                <cells>
+		                   <Text text="{Ebeln}" />  
+		                   <Text text="{Tpcamp}" />  
+		                   <Text text="{Bedat}" />  
+		                   <Text text="{Vhcle}" />  
+		                   <Text text="{Matnr}" />
+		                </cells>
+		            </ColumnListItem>
+		          </items>
+		      </Table>
+		    </smartTable:SmartTable>
+		
+		  </l:VerticalLayout>	
+    </Page>
+</mvc:View>

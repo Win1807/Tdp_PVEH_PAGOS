@@ -1,0 +1,36 @@
+<mvc:View 
+    controllerName="sap.ui.veh_pagos.controller.Home" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:u="sap.ui.unified"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:c="sap.ui.core"
+    xmlns:m="sap.ui.table"
+    xmlns="sap.m">
+    <Page title="Módulo de Pagos al Dealer" showNavButton="true" navButtonPress="onNavBack">
+            <IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding" expanded="true">
+                <items>
+                    <IconTabFilter id="iconTabList" 
+                                   icon="sap-icon://create-form" 
+                                   text="Gestión"
+                                   design="Horizontal">
+                        <c:Fragment id="frgGestion" fragmentName="sap.ui.veh_pagos.fragment.GestionPago" type="XML" />
+                    </IconTabFilter>
+                    <IconTabFilter id="iconTabRegistrar" 
+                                   icon="sap-icon://car-rental" 
+                                   text="Reporte"
+                                   design="Horizontal">
+                        <c:Fragment id="frgReporte" fragmentName="sap.ui.veh_pagos.fragment.ReporteOC" type="XML" />
+                    </IconTabFilter>
+                    <IconTabFilter id="ReporteSolicitudesPagos" 
+                                   icon="sap-icon://manager-insight"
+                                   tooltip="Reporte de solicitudes de pago"
+                                   text="Reporte Solicitud"
+                                   design="Horizontal">
+                        <c:Fragment id="frgReporteSolicitud" fragmentName="sap.ui.veh_pagos.fragment.ReporteSolicitudPagos" type="XML" />
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        
+    </Page>
+</mvc:View>

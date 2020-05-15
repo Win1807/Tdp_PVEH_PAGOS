@@ -1,0 +1,265 @@
+<c:FragmentDefinition   xmlns:mvc="sap.ui.core.mvc"
+                        xmlns:u="sap.ui.unified"
+                        xmlns:l="sap.ui.layout"
+                        xmlns:f="sap.ui.layout.form"
+                        xmlns:c="sap.ui.core"
+                        xmlns:m="sap.ui.table"
+                        xmlns="sap.m">
+  <Panel 
+    expandable="true" 
+    expanded="true" 
+    width="auto">
+    <f:Form id="FORMULARIO" editable="true">
+
+      <f:layout>
+        <f:ResponsiveGridLayout
+            labelSpanXL="3"
+            labelSpanL="3"
+            labelSpanM="6"
+            labelSpanS="12"
+            adjustLabelSpan="false"
+            emptySpanXL="0"
+            emptySpanL="0"
+            emptySpanM="0"
+            emptySpanS="0"
+            columnsXL="2"
+            columnsL="2"
+            columnsM="1"
+            singleContainerFullSize="false" />
+        </f:layout>
+    <f:formContainers>
+      <f:FormContainer title="">
+        <f:formElements>
+            <f:FormElement label="Archivo de Carga" required="true" >
+                <f:fields>
+                    <u:FileUploader
+                      id="fileUploader"
+                      name="myFileUpload"
+                      uploadUrl="upload/"
+                      width="100%"
+                      tooltip="Seleccione el archivo"
+                      uploadComplete="handleUploadComplete"
+                      change="onChange"
+                      typeMissmatch="handleTypeMissmatch"
+                      style="Emphasized"
+                      fileType="xlsx,xls"
+                      placeholder="Seleccione el archivo ..."
+                      class="sapUiSmallMarginBottom">
+                      <u:parameters>
+                          <u:FileUploaderParameter
+                              name="param1"
+                              value="Foo"/>
+                          <u:FileUploaderParameter
+                              name="param2"
+                              value="bar"/>
+                      </u:parameters>
+                      <u:headerParameters>
+                          <u:FileUploaderParameter
+                              name="headerParam1"
+                              value="Foo"/>
+                          <u:FileUploaderParameter
+                              name="headerParam2"
+                              value="bar"/>
+                      </u:headerParameters>
+                  </u:FileUploader>
+                </f:fields>
+            </f:FormElement>
+            <f:FormElement label="">
+                <f:fields>
+                	<Button type="Default"
+                     text="Cargar Archivo"
+                     press="onExportExcel"
+                     icon="sap-icon://add-document"
+                     class="sapUiSmallMarginBottom">
+                </Button>
+                </f:fields>
+            </f:FormElement>
+        </f:formElements>
+      </f:FormContainer>
+
+        <f:FormContainer title="">
+            <f:formElements>
+              <f:FormElement label="">
+                    <f:fields>
+                    <Button type="Default"
+                       text="Borrar Líneas Marcadas"
+                       press="onDeleteLine"
+                       icon="sap-icon://delete"
+                       class="sapUiSmallMarginBottom">
+                      </Button>
+                    </f:fields>
+                </f:FormElement>
+                <f:FormElement label="">
+                    <f:fields>
+                    	<Button
+                       text="Procesar Datos"
+                       press="onPrecesarDatos"
+                       icon="sap-icon://complete"
+                       type="Accept"
+                       class="sapUiSmallMarginBottom">
+                      </Button>
+                    </f:fields>
+                </f:FormElement>
+            </f:formElements>
+        </f:FormContainer>
+      </f:formContainers>
+    </f:Form>
+  </Panel>
+            
+  <ObjectHeader title="Lista de Vehículos"></ObjectHeader>
+  <ScrollContainer>
+    <Table id="TBVehiculos"  mode="MultiSelect">
+      <columns>
+          <Column
+              width="5rem"
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Año Fab."/>
+          </Column>
+          <Column
+              width="5rem"
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Cod. DLR"/>
+          </Column>
+          <Column
+              width="5rem"
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Serie"/>
+          </Column>
+          <Column
+              width="5rem"
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Cod. Versión"/>
+          </Column>
+          <Column
+              width="12rem"
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Des. Versión"/>
+          </Column>
+          <Column
+              width="6.5rem"
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Fecha.Fac.TDP"/>
+          </Column>
+          <Column
+              width="6.5rem"
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Fecha.Fac.DLR"/>
+          </Column>
+          <Column
+              width="5rem"
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Monto S/."/>
+          </Column>
+          <Column
+              width="5rem"
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Monto $."/>
+          </Column>
+          <Column
+              width="6rem"
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Cliente Final"/>
+          </Column>
+          <Column
+              width="7rem"
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Observaciones" />
+          </Column>
+          <Column
+              width="8rem"
+              minScreenWidth="Tablet"
+              demandPopin="true"
+              hAlign="End">
+              <Text text="Log. de Proceso" />
+          </Column>
+      </columns>
+      <items>
+      </items>
+    </Table> 
+  </ScrollContainer>
+        <!--********************************************************************************************************-->
+  <ObjectHeader title="Campañas Disponibles"></ObjectHeader>
+  <Table id="TableCD">
+    <columns>
+      <Column
+        width="11em">
+        <Text text="Campaña" />
+      </Column>
+      <Column
+          width="5em"
+          minScreenWidth="Tablet"
+          demandPopin="true">
+          <Text text="Válido desde" />
+      </Column>
+      <Column
+          width="5em"
+          minScreenWidth="Tablet"
+          demandPopin="true">
+          <Text text="Validez a" />
+      </Column>
+      <Column
+          width="8em"
+          minScreenWidth="Tablet"
+          demandPopin="true"
+          hAlign="Center">
+          <Text text="Valor neto" />
+      </Column>
+      <Column
+          width="8em"
+          minScreenWidth="Tablet"
+          demandPopin="IGV">
+          <Text text="Valor neto 2" />
+      </Column>
+      <Column
+          width="5em"
+          minScreenWidth="Tablet"
+          demandPopin="true">
+          <Text text="Moneda" />
+      </Column>
+      <Column
+          width="8em"
+          minScreenWidth="Tablet"
+          demandPopin="true"
+          hAlign="End">
+          <Text text="Versión" />
+      </Column>
+    </columns>
+    <items>
+    </items>
+  </Table> 
+      <!--********************************************************************************************************-->
+    <ObjectHeader title="Log de Procesamiento"></ObjectHeader>
+    <Table id="TBLog">
+      <columns>
+          <Column
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Serie" />
+          </Column>
+          <Column
+              minScreenWidth="Tablet"
+              demandPopin="true">
+              <Text text="Tipo" />
+          </Column>
+          <Column
+              minScreenWidth="Tablet"
+              demandPopin="true"
+              hAlign="End">
+              <Text text="Texto" />
+          </Column>
+      </columns>
+      <items>
+      </items>
+  </Table>
+</c:FragmentDefinition>
